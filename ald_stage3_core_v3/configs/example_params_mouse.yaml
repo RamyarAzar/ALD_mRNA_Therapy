@@ -1,0 +1,165 @@
+model_config:
+  platforms: ["LNP", "EV"]
+  compartments: ["plasma", "liver", "periphery", "CNS", "CSF"]
+  cell_types: ["hepatocyte", "oligodendrocyte", "astrocyte", "microglia"]
+
+blockA:
+  # Volumes [arbitrary units]
+  V_c: [1.0, 0.5, 5.0, 0.2, 0.05]
+
+  # Flow matrix Q[c_from][c_to]
+  Q:
+    - [0.0, 0.5, 0.0, 0.0, 0.0]   # from plasma
+    - [0.5, 0.0, 0.2, 0.0, 0.0]   # from liver
+    - [0.0, 0.2, 0.0, 0.1, 0.0]   # from periphery
+    - [0.0, 0.0, 0.1, 0.0, 0.05]  # from CNS
+    - [0.0, 0.0, 0.0, 0.05, 0.0]  # from CSF
+
+  # Organ clearances
+  CL_c: [0.1, 0.05, 0.02, 0.01, 0.0]
+
+  # BBB / FUS
+  A_BBB: 1.0
+  P_baseline: 0.0001
+  M_FUS: 5.0
+  t_FUS: 24.0      # hours
+  dt_FUS: 1.0      # hours
+
+  # Vmax_uptake, Km_uptake, theta_surface all (K, C, N_cell) = (2, 5, 4)
+
+  Vmax_uptake:
+    -  # platform 0 (LNP)
+      - [1.0, 0.1, 0.0, 0.0]   # plasma
+      - [5.0, 0.5, 0.1, 0.1]   # liver
+      - [0.2, 0.2, 0.2, 0.2]   # periphery
+      - [0.1, 0.3, 0.3, 0.3]   # CNS
+      - [0.0, 0.0, 0.0, 0.0]   # CSF
+    -  # platform 1 (EV)
+      - [0.5, 0.05, 0.0, 0.0]  # plasma
+      - [2.0, 0.2, 0.05, 0.05] # liver
+      - [0.1, 0.1, 0.1, 0.1]   # periphery
+      - [0.05, 0.2, 0.2, 0.2]  # CNS
+      - [0.0, 0.0, 0.0, 0.0]   # CSF
+
+  Km_uptake:
+    -  # platform 0
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+    -  # platform 1
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+
+  theta_surface:
+    -  # platform 0
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+    -  # platform 1
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+      - [1.0, 1.0, 1.0, 1.0]
+
+blockB:
+  eta_esc: [0.3, 0.2]   # per platform (LNP, EV)
+
+  # alpha_kc_cell[k][c][cell]
+  alpha_kc_cell:
+    -  # platform 0 (LNP)
+      - [0.9, 0.1, 0.0, 0.0]   # plasma
+      - [0.7, 0.2, 0.05, 0.05] # liver
+      - [0.4, 0.2, 0.2, 0.2]   # periphery
+      - [0.1, 0.3, 0.3, 0.3]   # CNS
+      - [0.25, 0.25, 0.25, 0.25] # CSF
+    -  # platform 1 (EV)
+      - [0.9, 0.1, 0.0, 0.0]
+      - [0.7, 0.2, 0.05, 0.05]
+      - [0.4, 0.2, 0.2, 0.2]
+      - [0.1, 0.3, 0.3, 0.3]
+      - [0.25, 0.25, 0.25, 0.25]
+
+  kdeg_m: 0.05
+  ktr: 0.1
+  kdeg_p: 0.01
+
+  kins_max: 0.2
+  K_ins: 1.0
+  C_PEX: 1.0
+  kturnover_peri: 0.02
+
+  Vbeta_WT: 1.0
+  PALDP_WT: 1.0
+  K_beta: 0.5
+  gamma_beta: 2.0
+
+  # weights over cell_types = (hepatocyte, oligodendrocyte, astrocyte, microglia)
+  cell_weights: [0.6, 0.2, 0.1, 0.1]
+
+blockC_mouse:
+  Km_C26: 1.0
+  Vmax_C26: 1.0
+
+  kclear_plasma: 0.05
+  kclear_CNS: 0.03
+  k_cross: 0.01
+
+  kappa_infl: 0.1
+  kappa_resolve: 0.05
+
+  Pprod_plasma_const: 0.5
+  Pprod_CNS_const: 0.3
+
+  infl_C_half: 1.0
+  infl_gamma: 2.0
+
+  NfL_baseline: 1.0
+  alpha_NfL: 0.5
+
+  FA_baseline: 0.4
+  alpha_FA: 0.1
+
+  Rotarod_baseline: 100.0
+  alpha_Rotarod: 10.0
+
+blockD:
+  k_cyt_ind: 0.5
+  k_cyt_decay: 0.2
+
+  k_ALT_ind: 0.3
+  k_ALT_decay: 0.1
+
+  k_AST_ind: 0.3
+  k_AST_decay: 0.1
+
+  k_ADA_ind: [0.01, 0.02]
+  k_ADA_decay: [0.001, 0.001]
+
+  Esafe_cyt: 10.0
+  Esafe_ALT: 3.0
+  Esafe_AST: 3.0
+
+  driver_choice:
+    cyt: "AUC_plasma"
+    hep: "Cmax_liver"
+    ADA:
+      - "cum_dose_LNP"
+      - "cum_dose_EV"
+
+blockE:
+  cmc_metrics:
+    "0_0": [80.0, 0.10, 0.95]    # size, PDI, EE for LNP batch 0
+    "1_0": [120.0, 0.20, 0.90]   # size, PDI, EE for EV batch 0
+
+  mapping_type:
+    phi: "linear_on_size"
+    psi: "logistic_on_PDI"
+    theta_mrna: "affine_on_EE"

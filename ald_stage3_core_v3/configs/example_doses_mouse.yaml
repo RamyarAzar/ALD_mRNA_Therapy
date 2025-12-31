@@ -1,0 +1,21 @@
+t0: 0.0
+tend: 168.0   # simulate for 7 days (example)
+
+doses:
+  - time: 0.0
+    platform: "LNP"
+    compartment: "plasma"
+    amount: 1.0
+    batch_index: 0
+
+  - time: 24.0
+    platform: "LNP"
+    compartment: "plasma"
+    amount: 1.0
+    batch_index: 0
+
+  - time: 48.0
+    platform: "EV"
+    compartment: "plasma"
+    amount: 0.5
+    batch_index: 0
